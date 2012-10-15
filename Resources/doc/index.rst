@@ -1,17 +1,15 @@
-DoctrineFixturesBundle
-======================
+Neo4jFixturesBundle
+===================
 
 Fixtures are used to load a controlled set of data into a database. This data
 can be used for testing or could be the initial data required for the
-application to run smoothly. Symfony2 has no built in way to manage fixtures
-but Doctrine2 has a library to help you write fixtures for the Doctrine
-:doc:`ORM</book/doctrine>` or :doc:`ODM</bundles/DoctrineMongoDBBundle/index>`.
+application to run smoothly.
 
 Setup and Configuration
 -----------------------
 
-Doctrine fixtures for Symfony are maintained in the `DoctrineFixturesBundle`_.
-The bundle uses external `Doctrine Data Fixtures`_ library.
+Neo4j fixtures for Symfony are maintained in the `Neo4jFixturesBundle`_.
+The bundle uses external `Neo4j Data Fixtures`_ library.
 
 Follow these steps to install the bundle and the library in the Symfony
 Standard edition. Add the following to your ``composer.json`` file:
@@ -20,7 +18,7 @@ Standard edition. Add the following to your ``composer.json`` file:
 
     {
         "require": {
-            "doctrine/doctrine-fixtures-bundle": "dev-master"
+            "expio/neo4j-fixtures-bundle": "dev-master"
         }
     }
 
@@ -30,16 +28,16 @@ Update the vendor libraries:
 
     $ php composer.phar update
 
-If everything worked, the ``DoctrineFixturesBundle`` can now be found
-at ``vendor/doctrine/doctrine-fixtures-bundle``.
+If everything worked, the ``Neo4jFixturesBundle`` can now be found
+at ``vendor/expio/neo4j-fixtures-bundle``.
 
 .. note::
 
-    ``DoctrineFixturesBundle`` installs
-    `Doctrine Data Fixtures`_ library. The library can be found
-    at ``vendor/doctrine/data-fixtures``.
+    ``Neo4jFixturesBundle`` installs
+    `Neo4j Data Fixtures`_ library. The library can be found
+    at ``vendor/expio/neo4j-data-fixtures``.
 
-Finally, register the Bundle ``DoctrineFixturesBundle`` in ``app/AppKernel.php``.
+Finally, register the Bundle ``Neo4jFixturesBundle`` in ``app/AppKernel.php``.
 
 .. code-block:: php
 
@@ -48,7 +46,7 @@ Finally, register the Bundle ``DoctrineFixturesBundle`` in ``app/AppKernel.php``
     {
         $bundles = array(
             // ...
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Expio\Bundle\Neo4jFixturesBundle\Neo4jFixturesBundle(),
             // ...
         );
         // ...
@@ -57,26 +55,23 @@ Finally, register the Bundle ``DoctrineFixturesBundle`` in ``app/AppKernel.php``
 Writing Simple Fixtures
 -----------------------
 
-Doctrine2 fixtures are PHP classes where you can create objects and persist
+Fixtures are PHP classes where you can create objects and persist
 them to the database. Like all classes in Symfony2, fixtures should live inside
 one of your application bundles.
 
-For a bundle located at ``src/Acme/HelloBundle``, the fixture classes
-should live inside ``src/Acme/HelloBundle/DataFixtures/ORM`` or
-``src/Acme/HelloBundle/DataFixtures/MongoDB`` respectively for the ORM and ODM,
-This tutorial assumes that you are using the ORM - but fixtures can be added
-just as easily if you're using the ODM.
+For a bundle located at ``src/Acme/HelloBundle``, the Neo4j fixture classes
+should live inside ``src/Acme/HelloBundle/DataFixtures/OGM``.
 
 Imagine that you have a ``User`` class, and you'd like to load one ``User``
 entry:
 
 .. code-block:: php
 
-    // src/Acme/HelloBundle/DataFixtures/ORM/LoadUserData.php
+    // src/Acme/HelloBundle/DataFixtures/OGM/LoadUserData.php
 
-    namespace Acme\HelloBundle\DataFixtures\ORM;
+    namespace Acme\HelloBundle\DataFixtures\OGM;
 
-    use Doctrine\Common\DataFixtures\FixtureInterface;
+    use Expio\Common\Neo4jDataFixtures\FixtureInterface;
     use Doctrine\Common\Persistence\ObjectManager;
     use Acme\HelloBundle\Entity\User;
 
@@ -96,7 +91,7 @@ entry:
         }
     }
 
-In Doctrine2, fixtures are just objects where you load data by interacting
+Fixtures are just objects where you load data by interacting
 with your entities as you normally do. This allows you to create the exact
 fixtures you need for your application.
 
@@ -107,21 +102,14 @@ Executing Fixtures
 ------------------
 
 Once your fixtures have been written, you can load them via the command
-line by using the ``doctrine:fixtures:load`` command:
+line by using the ``neo4j:fixtures:load`` command:
 
 .. code-block:: bash
 
-    php app/console doctrine:fixtures:load
+    php app/console neo4j:fixtures:load
 
-If you're using the ODM, use the ``doctrine:mongodb:fixtures:load`` command instead:
-
-.. code-block:: bash
-
-    php app/console doctrine:mongodb:fixtures:load
-
-The task will look inside the ``DataFixtures/ORM`` (or ``DataFixtures/MongoDB``
-for the ODM) directory of each bundle and execute each class that implements
-the ``FixtureInterface``.
+The task will look inside the ``DataFixtures/OGM`` directory of each bundle and
+execute each class that implements the ``FixtureInterface``.
 
 Both commands come with a few options:
 
@@ -134,16 +122,11 @@ Both commands come with a few options:
 * ``--em=manager_name`` - Manually specify the entity manager to use for
   loading the data.
 
-.. note::
-
-   If using the ``doctrine:mongodb:fixtures:load`` task, replace the ``--em=``
-   option with ``--dm=`` to manually specify the document manager.
-
 A full example use might look like this:
 
 .. code-block:: bash
 
-   php app/console doctrine:fixtures:load --fixtures=/path/to/fixture1 --fixtures=/path/to/fixture2 --append --em=foo_manager
+   php app/console neo4j:fixtures:load --fixtures=/path/to/fixture1 --fixtures=/path/to/fixture2 --append --em=foo_manager
 
 Sharing Objects between Fixtures
 --------------------------------
@@ -154,17 +137,17 @@ For example, what if you load a ``User`` object in one fixture, and then
 want to refer to reference it in a different fixture in order to assign that
 user to a particular group?
 
-The Doctrine fixtures library handles this easily by allowing you to specify
+The Neo4j fixtures library handles this easily by allowing you to specify
 the order in which fixtures are loaded.
 
 .. code-block:: php
 
-    // src/Acme/HelloBundle/DataFixtures/ORM/LoadUserData.php
-    namespace Acme\HelloBundle\DataFixtures\ORM;
+    // src/Acme/HelloBundle/DataFixtures/OGM/LoadUserData.php
+    namespace Acme\HelloBundle\DataFixtures\OGM;
 
-    use Doctrine\Common\DataFixtures\AbstractFixture;
-    use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-    use Doctrine\Common\Persistence\ObjectManager;
+    use Expio\Common\Neo4jDataFixtures\AbstractFixture;
+    use Expio\Common\Neo4jDataFixtures\OrderedFixtureInterface;
+    use HireVoice\Neo4j\EntityManager as ObjectManager;
     use Acme\HelloBundle\Entity\User;
 
     class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
@@ -194,19 +177,19 @@ the order in which fixtures are loaded.
     }
 
 The fixture class now implements ``OrderedFixtureInterface``, which tells
-Doctrine that you want to control the order of your fixtures. Create another
+us that you want to control the order of your fixtures. Create another
 fixture class and make it load after ``LoadUserData`` by returning an order
 of 2:
 
 .. code-block:: php
 
-    // src/Acme/HelloBundle/DataFixtures/ORM/LoadGroupData.php
+    // src/Acme/HelloBundle/DataFixtures/OGM/LoadGroupData.php
 
-    namespace Acme\HelloBundle\DataFixtures\ORM;
+    namespace Acme\HelloBundle\DataFixtures\OGM;
 
-    use Doctrine\Common\DataFixtures\AbstractFixture;
-    use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-    use Doctrine\Common\Persistence\ObjectManager;
+    use Expio\Common\Neo4jDataFixtures\AbstractFixture;
+    use Expio\Common\Neo4jDataFixtures\OrderedFixtureInterface;
+    use HireVoice\Neo4j\EntityManager as ObjectManager;
     use Acme\HelloBundle\Entity\Group;
 
     class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
@@ -242,13 +225,13 @@ references:
 
 .. code-block:: php
 
-    // src/Acme/HelloBundle/DataFixtures/ORM/LoadUserGroupData.php
+    // src/Acme/HelloBundle/DataFixtures/OGM/LoadUserGroupData.php
 
-    namespace Acme\HelloBundle\DataFixtures\ORM;
+    namespace Acme\HelloBundle\DataFixtures\OGM;
 
-    use Doctrine\Common\DataFixtures\AbstractFixture;
-    use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-    use Doctrine\Common\Persistence\ObjectManager;
+    use Expio\Common\Neo4jDataFixtures\AbstractFixture;
+    use Expio\Common\Neo4jDataFixtures\OrderedFixtureInterface;
+    use HireVoice\Neo4j\EntityManager as ObjectManager;
     use Acme\HelloBundle\Entity\UserGroup;
 
     class LoadUserGroupData extends AbstractFixture implements OrderedFixtureInterface
@@ -298,11 +281,11 @@ component when checking it:
 
 .. code-block:: php
 
-    // src/Acme/HelloBundle/DataFixtures/ORM/LoadUserData.php
+    // src/Acme/HelloBundle/DataFixtures/OGM/LoadUserData.php
 
-    namespace Acme\HelloBundle\DataFixtures\ORM;
+    namespace Acme\HelloBundle\DataFixtures\OGM;
 
-    use Doctrine\Common\DataFixtures\FixtureInterface;
+    use Expio\Common\Neo4jDataFixtures\FixtureInterface;
     use Symfony\Component\DependencyInjection\ContainerAwareInterface;
     use Symfony\Component\DependencyInjection\ContainerInterface;
     use Acme\HelloBundle\Entity\User;
@@ -354,5 +337,5 @@ class (as shown above), you can access it in the ``load()`` method.
     If you are too lazy to implement the needed method :method:`Symfony\\Component\\DependencyInjection\\ContainerInterface::setContainer`,
     you can then extend your class with :class:`Symfony\\Component\\DependencyInjection\\ContainerAware`.
 
-.. _DoctrineFixturesBundle: https://github.com/doctrine/DoctrineFixturesBundle
-.. _`Doctrine Data Fixtures`: https://github.com/doctrine/data-fixtures
+.. _Neo4jFixturesBundle: https://github.com/sgarner/Neo4jFixturesBundle
+.. _`Neo4j Data Fixtures`: https://github.com/sgarner/neo4j-data-fixtures

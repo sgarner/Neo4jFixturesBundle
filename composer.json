@@ -1,11 +1,15 @@
 {
-    "name": "doctrine/doctrine-fixtures-bundle",
+    "name": "expio/neo4j-fixtures-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony DoctrineFixturesBundle",
+    "description": "Symfony Neo4jFixturesBundle (based on Neo4jFixturesBundle)",
     "keywords": ["Persistence", "Fixture"],
-    "homepage": "http://www.doctrine-project.org",
+    "homepage": "https://github.com/sgarner/Neo4jFixturesBundle",
     "license": "MIT",
     "authors": [
+		{
+            "name": "Simon Garner",
+            "email": "sgarner@expio.co.nz"
+        },
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
@@ -23,10 +27,11 @@
         "php": ">=5.3.2",
         "symfony/doctrine-bridge": ">=2.1.0,<2.3-dev",
         "doctrine/doctrine-bundle": "1.0.*",
-        "doctrine/data-fixtures": "*"
+        "expio/neo4j-data-fixtures": "*",
+        "kwattro/neo4j-ogm-bundle": "*"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Bundle\\FixturesBundle": "" }
+        "psr-0": { "Expio\\Bundle\\Neo4jFixturesBundle": "" }
     },
-    "target-dir": "Doctrine/Bundle/FixturesBundle"
+    "target-dir": "Expio/Bundle/Neo4jFixturesBundle"
 }

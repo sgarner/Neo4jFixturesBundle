@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Doctrine\Bundle\FixturesBundle;
+namespace Expio\Bundle\Neo4jFixturesBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -22,6 +22,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
  */
-class DoctrineFixturesBundle extends Bundle
+class Neo4jFixturesBundle extends Bundle
 {
 }
