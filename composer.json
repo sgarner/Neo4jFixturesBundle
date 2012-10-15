@@ -1,9 +1,9 @@
 {
     "name": "expio/neo4j-fixtures-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony Neo4jFixturesBundle (based on Neo4jFixturesBundle)",
+    "description": "Symfony ExpioNeo4jFixturesBundle (based on ExpioNeo4jFixturesBundle)",
     "keywords": ["Persistence", "Fixture"],
-    "homepage": "https://github.com/sgarner/Neo4jFixturesBundle",
+    "homepage": "https://github.com/sgarner/ExpioNeo4jFixturesBundle",
     "license": "MIT",
     "authors": [
 		{
@@ -33,5 +33,5 @@
     "autoload": {
         "psr-0": { "Expio\\Bundle\\Neo4jFixturesBundle": "" }
     },
-    "target-dir": "Expio/Bundle/Neo4jFixturesBundle"
+    "target-dir": "Expio/Bundle/ExpioNeo4jFixturesBundle"
 }

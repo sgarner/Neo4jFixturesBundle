@@ -30,7 +30,7 @@ use InvalidArgumentException;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
  */
-class LoadDataFixturesDoctrineCommand extends ContainerAwareCommand
+class LoadDataFixturesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

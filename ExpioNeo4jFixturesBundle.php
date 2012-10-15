@@ -22,6 +22,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
  */
-class Neo4jFixturesBundle extends Bundle
+class ExpioNeo4jFixturesBundle extends Bundle
 {
 }
