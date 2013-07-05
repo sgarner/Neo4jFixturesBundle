@@ -58,11 +58,11 @@ EOT
     /**
      * Get the graph manager service
      *
-     * @return \Kwattro\Neo4jBundle\GraphManager\GraphManager
+     * @return \HireVoice\Neo4j\EntityManager
      */
     protected function getGraphManager()
     {
-        return $this->getContainer()->get('kwattro_neo4j.graph_manager');
+        return $this->getContainer()->get('id009_neo4j.entity_manager');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

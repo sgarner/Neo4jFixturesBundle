@@ -28,7 +28,7 @@
         "symfony/doctrine-bridge": ">=2.1.0,<2.3-dev",
         "doctrine/doctrine-bundle": "1.0.*",
         "expio/neo4j-data-fixtures": "*",
-        "kwattro/neo4j-ogm-bundle": "*"
+        "id009/neo4jbundle": "dev-master",
     },
     "autoload": {
         "psr-0": { "Expio\\Bundle\\Neo4jFixturesBundle": "" }
